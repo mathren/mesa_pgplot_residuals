@@ -1,0 +1,34 @@
+&star_job
+
+! display on-screen plots
+pgstar_flag = .true.
+
+/ ! end of star_job namelist
+
+
+&eos
+
+/ ! end of eos namelist
+
+
+&kap
+
+use_Type2_opacities = .true.
+Zbase = 0.02
+
+/ ! end of kap namelist
+
+
+&controls
+
+initial_mass = 15 ! in Msun units
+initial_z = 0.02
+xa_central_lower_limit_species(1) = 'he4'
+xa_central_lower_limit(1) = 1d-3
+energy_eqn_option = 'dedt'
+use_gold_tolerances = .true.
+
+!! show new plot
+use_other_pgstar_plots = .true.
+
+/ ! end of controls namelist

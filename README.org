@@ -1,0 +1,47 @@
+#+title: Kippenhahn-style plot of residuals
+#+author: [[mrenzo@arizona.edu][Mathieu Renzo]]
+
+#+DOWNLOADED: screenshot @ 2026-05-19 17:36:13
+[[file:.org_notes_figures/2026-05-19_17-36-13_screenshot.png]]
+
+
+The file =pgstar_residuals.inc= allows to make a Kippenhahn diagram
+(with mass on the y-axis and model number on the x-axis) colored by
+
+#+BEGIN_SRC fortran
+   safe_log10(maxval(abs(s%equ(1:neq, k))))
+#+END_SRC
+
+which is the logarithm of the absolute value of the biggest residual
+at cell =k= for the *accepted* iteration of MESA's Newton-Raphson solver.
+
+To visualize the residuals of a specific equation, substitute =1:neq=
+with the index of the equation of interest (see
+=$MESA_DIR//star/private/hydro_eqns.f90=)
+
+** How to use
+
+1. paste the following block into =run_star_extras.f90= *before* the =contains=:
+#+BEGIN_SRC fortran
+   integer, parameter :: NR_MAX_MODELS = 2000       ! rolling x-axis
+   integer, allocatable, save :: nr_zone_buf(:)
+   integer, allocatable, save :: nr_model_buf(:)     ! (NR_MAX_MODELS)
+   integer,              save :: nr_n_stored = 0, nr_n_cells = 0
+   real, allocatable, save :: nr_resid_buf(:,:)   ! (NR_MAX_MODELS, nz)
+   real, allocatable, save :: nr_mass_buf(:,:)
+   real,                 save :: nr_resid_min = -101.0, nr_resid_max = -101.0  ! auto-scale
+#+END_SRC
+2. after =contains= in =run_star_extras.f90=, add:
+#+BEGIN_SRC fortran
+   include 'pgstar_residuals.inc'
+#+END_SRC
+3. In your =inlist=, in =extras_controls=, add:
+   =s% other_pgstar_plots_info => nr_resid_pgstar_plots_info=
+   to use the =other= hook and get this plot.
+
+See also comment at the top of the file =pgstar_residuals.inc=.
+
+** TODO
+
+- [ ] right now this uses =s%m(k)= (the outer mass coordinate of the
+  cell) while the residuals are cell-centered. This could be fixed
