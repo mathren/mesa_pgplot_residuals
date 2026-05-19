@@ -1,8 +1,8 @@
 #+title: Kippenhahn-style plot of residuals
 #+author: [[mrenzo@arizona.edu][Mathieu Renzo]]
 
-#+DOWNLOADED: screenshot @ 2026-05-19 17:36:13
-[[file:.org_notes_figures/2026-05-19_17-36-13_screenshot.png]]
+#+DOWNLOADED: screenshot @ 2026-05-19 17:56:12
+[[file:.org_notes_figures/2026-05-19_17-56-12_screenshot.png]]
 
 
 The file =pgstar_residuals.inc= allows to make a Kippenhahn diagram
