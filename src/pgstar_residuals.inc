@@ -20,6 +20,7 @@
 !
 ! ---------------------------------------------------------------------------
 
+! -----------  register plot ----------------------------
    subroutine nr_resid_pgstar_plots_info(id, ierr)
       use star_pgstar
       integer, intent(in)  :: id
@@ -32,11 +33,10 @@
       call star_ptr(id, s, ierr)
       if (ierr /= 0) return
 
-      ! --- register plot with built-in defaults ---
       p => s%pg%pgstar_win_file_ptr(i_Other)
       p%plot              => nr_resid_plot
       p%id                =  i_Other
-      p%name              = 'Newton Raphson Residuals'
+      p%name              = 'Newton Raphson Residuals - accepted step'
       p%win_flag          = .true.
       p%win_width         =  12.0
       p%win_aspect_ratio  =  0.6
@@ -49,7 +49,7 @@
 
    end subroutine nr_resid_pgstar_plots_info
 
-
+! -----------  render plot ----------------------------
    subroutine nr_resid_plot(id, device_id, ierr)
       use const_def, only: dp
       integer, intent(in)  :: id, device_id
@@ -62,7 +62,7 @@
       call star_ptr(id, s, ierr)
       if (ierr /= 0) return
 
-      neq = size(s%equ, 1)   ! equations per cell; avoids s%nvar naming issues
+      neq = size(s%equ, 1)   ! number of equations per cell
 
       ! --- allocate history buffer on first call ---
       if (.not. allocated(nr_resid_buf)) then
@@ -89,8 +89,8 @@
       nr_model_buf(col) = s%model_number
       nr_zone_buf(col) = s%nz
       do k = 1, s%nz
-         nr_resid_buf(col, k) = safe_log10(maxval(abs(s%equ(1:neq, k))))
-         nr_mass_buf(col, k) = s%m(k)
+         nr_resid_buf(col, k) = safe_log10(maxval(abs(s%equ(1:neq, k))))       ! residuals are cell-centered
+         nr_mass_buf(col, k) = s%m(k) - 0.5 * s%dm(k) ! outer face mass coord minus half mass of the cell
       end do
 
       call pgslct(device_id)
@@ -111,7 +111,7 @@
       real :: mlo, mhi, dm, m_j, frac
       integer :: nx, ny, i, j, k, nz_i
 
-      ! for colorbar
+      ! ----------------------------------------- colorbar definition
       real :: bright, contra
       real, dimension(9) :: l, r, g, b
 
@@ -147,7 +147,6 @@
       allocate(img(nx, ny))
       allocate(mass_grid(ny))
 
-      ! --- mass range in solar masses (manual loop to respect nr_zone_buf) ---
       mhi = -1.0e30
       mlo =  1.0e30
       do i = 1, nx
@@ -164,15 +163,11 @@
 
       dm = (mhi - mlo) / real(ny - 1)
 
-      ! uniform mass grid:
-      !   j = 1  ->  mhi  (surface, k=1 in MESA)
-      !   j = ny ->  mlo  (centre,  k=nz in MESA)
       do j = 1, ny
          mass_grid(j) = mhi - real(j - 1) * dm
       end do
 
       ! --- interpolate residuals onto the uniform mass grid ---
-      ! MESA convention: m(k) decreases with k (m(1) = M_total, m(nz) ~ 0)
       img = -99.0
       do i = 1, nx
          nz_i = nr_zone_buf(i)
@@ -211,7 +206,7 @@
       tr(5) = 0.0
       tr(6) = -dm
 
-      ! colour scale
+      ! color scale
       fg = nr_resid_max
       bg = nr_resid_min
       if (fg <= -100) fg = maxval(img)
