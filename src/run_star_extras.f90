@@ -78,8 +78,8 @@ contains
     s% how_many_extra_profile_header_items => how_many_extra_profile_header_items
     s% data_for_extra_profile_header_items => data_for_extra_profile_header_items
 
-    ! s%other_pgstar_plots_info => nr_resid_pgstar_plots_info
-    s% other_pgstar_plots_info => equ_resid_hist
+    s%other_pgstar_plots_info => nr_resid_kipp_plots_info
+    ! s% other_pgstar_plots_info => equ_resid_hist
   end subroutine extras_controls
 
   subroutine extras_startup(id, restart, ierr)

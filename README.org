@@ -1,7 +1,7 @@
 #+title: Pgplot utilities to visualize MESA residuals
 #+author: [[mrenzo@arizona.edu][Mathieu Renzo]]
 
-* Kippenhahn style maximum residual across equations
+** Kippenhahn style maximum residual across equations
 
 #+DOWNLOADED: screenshot @ 2026-05-19 17:56:12
 [[file:.org_notes_figures/2026-05-19_17-56-12_screenshot.png]]
@@ -23,7 +23,7 @@ visualization purposes.
 Couple with a =pgplot= with mass as a function of =zone_number= to narrow
 the problematic zone.
 
-* Time evolution of the maximum residual across mesh points for each equation
+** Time evolution of the maximum residual across mesh points for each equation
 
 #+DOWNLOADED: screenshot @ 2026-05-20 15:57:21
 [[file:.org_notes_figures/Time_evolution_of_the_maximum_residual_across_mesh_points_for_each_equation/2026-05-20_15-57-21_screenshot.png]]
@@ -31,7 +31,7 @@ the problematic zone.
 Only for the structure equations (to avoid adding one line per each
 isotope in the nuclear reaction network).
 
-* How to use
+** How to use
 
 1. paste the following block into =run_star_extras.f90= *before* the =contains=:
 #+BEGIN_SRC fortran
@@ -62,7 +62,7 @@ to create some global variables accessible for these routines.
    a. to get a "Kippenhahn-style" map of mass coordinate vs. model number
    colored by the maximum residual (across all equations) for each location:
 #+BEGIN_SRC fortran
-   s% other_pgstar_plots_info => nr_resid_pgstar_plots_info
+        s% other_pgstar_plots_info => nr_resid_kipp_plots_info
 #+END_SRC
     b. to get a plot as a function of model number of the maximum
        (across mesh points) residual for each structure equation
@@ -72,7 +72,7 @@ to create some global variables accessible for these routines.
 
 See also comment at the top of the file =pgstar_residuals.inc=.
 
-* TODO Developments needed
+** TODO Developments needed
 
 Right now you can only have one of these plots because there is only
 one pointer =s% other_pgstar_plots_info=, to solve this some of these

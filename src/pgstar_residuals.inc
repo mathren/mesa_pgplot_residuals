@@ -30,7 +30,7 @@
 !    a. to get a "Kippenhahn-style" map of mass coordinate vs. model number
 !       colored by the maximum residual (across all equations) for each location:
 !
-!       s% other_pgstar_plots_info => nr_resid_pgstar_plots_info
+!       s% other_pgstar_plots_info => nr_resid_kipp_plots_info
 !
 !    b. to get a plot as a function of model number of the maximum
 !       (across mesh points) residual for each structure equation
@@ -39,7 +39,7 @@
 !
 ! ---------------------------------------------------------------------------
 
-subroutine nr_resid_pgstar_plots_info(id, ierr)
+subroutine nr_resid_kipp_plots_info(id, ierr)
   use star_pgstar
   integer, intent(in)  :: id
   integer, intent(out) :: ierr
@@ -65,7 +65,7 @@ subroutine nr_resid_pgstar_plots_info(id, ierr)
   p%file_width        = -1.0
   p%file_aspect_ratio = -1.0
 
-end subroutine nr_resid_pgstar_plots_info
+end subroutine nr_resid_kipp_plots_info
 
 ! Kippenhahn-style log10(max(|res|)) across eqs plot
 subroutine nr_resid_plot(id, device_id, ierr)
