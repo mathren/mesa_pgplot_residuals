@@ -21,7 +21,7 @@ Zbase = 0.02
 
 &controls
 
-initial_mass = 15 ! in Msun units
+initial_mass = 100 ! in Msun units
 initial_z = 0.02
 xa_central_lower_limit_species(1) = 'he4'
 xa_central_lower_limit(1) = 1d-3
@@ -33,8 +33,6 @@ cool_wind_RGB_scheme = 'de Jager'
 cool_wind_AGB_scheme = 'de Jager'
 Bjorklund_scaling_factor = 1.d0
 Dutch_scaling_factor = 1.d0
-
-
 
 ! show new plot
 use_other_pgstar_plots = .true.
