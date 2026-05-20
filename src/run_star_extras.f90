@@ -32,8 +32,12 @@ module run_star_extras
   integer, allocatable, save :: nr_model_buf(:)
   integer,              save :: nr_n_stored = 0, nr_n_cells = 0
   real, allocatable, save :: nr_resid_buf(:,:), tmp_resid_buf(:,:)
-  real, allocatable, save :: nr_mass_buf(:,:), tmp_mass_buf(:,:)
+  real, allocatable, save :: nr_ycoord_buf(:,:), tmp_mass_buf(:,:)
   real,              save :: nr_resid_min = -101.0, nr_resid_max = -101.0  ! auto-scale
+  ! to select y-axis
+  integer, parameter :: NR_COORD_MASS   = 1
+  integer, parameter :: NR_COORD_LOGR   = 2
+  integer, parameter :: NR_COORD_TAU    = 3
 
   ! for max residual across all cells for each equation
   integer, parameter :: max_resid_hist = 2000
