@@ -12,6 +12,10 @@
 ! real, allocatable, save :: nr_resid_buf(:,:), tmp_resid_buf(:,:)
 ! real, allocatable, save :: nr_ycoord_buf(:,:), tmp_mass_buf(:,:)
 ! real,              save :: nr_resid_min = -101.0, nr_resid_max = -101.0  ! auto-scale
+!  ! to select y-axis
+!  integer, parameter :: NR_COORD_MASS   = 1
+!  integer, parameter :: NR_COORD_LOGR   = 2
+!  integer, parameter :: NR_COORD_TAU    = 3
 ! integer, parameter :: NR_COORD_MASS   = 1
 ! integer, parameter :: NR_COORD_RADIUS = 2
 ! integer, parameter :: NR_COORD_TAU    = 3

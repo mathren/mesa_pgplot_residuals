@@ -17,6 +17,12 @@ the x-axis) colored by
 which is the logarithm of the absolute value of the biggest residual
 at cell =k= for the *accepted* iteration of MESA's Newton-Raphson solver.
 
+The y-axis can be Lagrangian mass coordinate, log(R/R_{\odot}), or log(\tau),
+chose by setting in the =controls= namelist
+#+BEGIN_SRC fortran
+x_integer_ctrl(1) = 1 ! 1=mass, 2=radius, 3=tau
+#+END_SRC
+
 Note that the y-axis is interpolated on a linear grid for
 visualization purposes.
 
@@ -43,6 +49,10 @@ isotope in the nuclear reaction network).
   real, allocatable, save :: nr_resid_buf(:,:), tmp_resid_buf(:,:)
   real, allocatable, save :: nr_mass_buf(:,:), tmp_mass_buf(:,:)
   real,              save :: nr_resid_min = -101.0, nr_resid_max = -101.0  ! auto-scale
+  ! to select y-axis
+  integer, parameter :: NR_COORD_MASS   = 1
+  integer, parameter :: NR_COORD_LOGR   = 2
+  integer, parameter :: NR_COORD_TAU    = 3
 
   ! for max residual across all cells for each equation
   integer, parameter :: max_resid_hist = 2000
