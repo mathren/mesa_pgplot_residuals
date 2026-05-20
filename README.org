@@ -82,6 +82,10 @@ to create some global variables accessible for these routines.
 
 See also comment at the top of the file =pgstar_residuals.inc=.
 
+** *Warnings*
+These plots will be saved in a subfolder =png= of your work directory,
+this is hardcoded.
+
 ** TODO Developments needed
 
 Right now you can only have one of these plots because there is only
