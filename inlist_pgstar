@@ -1,4 +1,5 @@
 &pgstar
+Kipp_win_flag = .true.
 
 
 / ! end of pgstar namelist
