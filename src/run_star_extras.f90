@@ -26,6 +26,7 @@ module run_star_extras
 
   implicit none
 
+  ! for Kippenhahn style local value of  max across equations of residual
   integer, parameter :: NR_MAX_MODELS = 2000
   integer, allocatable, save :: nr_zone_buf(:)
   integer, allocatable, save :: nr_model_buf(:)
@@ -34,12 +35,17 @@ module run_star_extras
   real, allocatable, save :: nr_mass_buf(:,:), tmp_mass_buf(:,:)
   real,              save :: nr_resid_min = -101.0, nr_resid_max = -101.0  ! auto-scale
 
+  ! for max residual across all cells for each equation
+  integer, parameter :: max_resid_hist = 2000
+  integer            :: n_resid_hist   = 0
+  integer            :: resid_hist_nvar = 0
+  integer,       allocatable :: resid_hist_model(:)        ! (max_resid_hist)
+  real,          allocatable :: resid_hist_vals(:,:)       ! (nvar, max_resid_hist)
+  character(len=32), allocatable :: resid_equ_names(:)
 
-  ! these routines are called by the standard run_star check_model
 contains
 
   include 'pgstar_residuals.inc'
-
 
   subroutine extras_controls(id, ierr)
     integer, intent(in) :: id
@@ -72,8 +78,8 @@ contains
     s% how_many_extra_profile_header_items => how_many_extra_profile_header_items
     s% data_for_extra_profile_header_items => data_for_extra_profile_header_items
 
-
-    s%other_pgstar_plots_info => nr_resid_pgstar_plots_info
+    ! s%other_pgstar_plots_info => nr_resid_pgstar_plots_info
+    s% other_pgstar_plots_info => equ_resid_hist
   end subroutine extras_controls
 
   subroutine extras_startup(id, restart, ierr)
