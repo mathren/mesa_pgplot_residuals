@@ -66,14 +66,31 @@
 
       ! --- allocate history buffer on first call ---
       if (.not. allocated(nr_resid_buf)) then
-         allocate(nr_resid_buf(NR_MAX_MODELS, s%nz))
+         allocate(nr_resid_buf(NR_MAX_MODELS, 5 * s%nz)) ! make 5 times bigger than current nz
+         allocate(nr_mass_buf(NR_MAX_MODELS, 5 * s%nz))
          allocate(nr_model_buf(NR_MAX_MODELS))
          allocate(nr_zone_buf(NR_MAX_MODELS))
-         allocate(nr_mass_buf(NR_MAX_MODELS, s%nz))
          nr_resid_buf = -99.0
          nr_mass_buf  =  0.0   ! zero-init so unused cells are safely masked
          nr_n_cells   = s%nz
+      else if (s%nz > 0.95 * size(nr_resid_buf, 2)) then
+         ! check if remeshing has increased nz beyond 95% of the
+         ! current array size, reallocate
+         allocate(tmp_resid_buf(NR_MAX_MODELS, 5 * s%nz))
+         allocate(tmp_mass_buf(NR_MAX_MODELS, 5  *s%nz))
+
+         tmp_resid_buf = -99.0
+         tmp_mass_buf  = 0.0
+
+         ! Copy older compressed history into the newly expanded arrays
+         tmp_resid_buf(:, 1:nr_n_cells) = nr_resid_buf(:, 1:nr_n_cells)
+         tmp_mass_buf(:, 1:nr_n_cells)  = nr_mass_buf(:, 1:nr_n_cells)
+
+         call move_alloc(tmp_resid_buf, nr_resid_buf)
+         call move_alloc(tmp_mass_buf, nr_mass_buf)
+         nr_n_cells = s%nz
       end if
+
 
       ! --- roll buffer if full ---
       if (nr_n_stored < NR_MAX_MODELS) then

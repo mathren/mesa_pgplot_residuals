@@ -28,11 +28,11 @@ module run_star_extras
 
   integer, parameter :: NR_MAX_MODELS = 2000
   integer, allocatable, save :: nr_zone_buf(:)
-  integer, allocatable, save :: nr_model_buf(:)     ! (NR_MAX_MODELS)
+  integer, allocatable, save :: nr_model_buf(:)
   integer,              save :: nr_n_stored = 0, nr_n_cells = 0
-  real, allocatable, save :: nr_resid_buf(:,:)   ! (NR_MAX_MODELS, nz)
-  real, allocatable, save :: nr_mass_buf(:,:)
-  real,                 save :: nr_resid_min = -101.0, nr_resid_max = -101.0  ! auto-scale
+  real, allocatable, save :: nr_resid_buf(:,:), tmp_resid_buf(:,:)
+  real, allocatable, save :: nr_mass_buf(:,:), tmp_mass_buf(:,:)
+  real,              save :: nr_resid_min = -101.0, nr_resid_max = -101.0  ! auto-scale
 
 
   ! these routines are called by the standard run_star check_model
