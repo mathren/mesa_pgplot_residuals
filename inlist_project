@@ -28,7 +28,13 @@ xa_central_lower_limit(1) = 1d-3
 energy_eqn_option = 'dedt'
 use_gold_tolerances = .true.
 
-!! show new plot
+hot_wind_scheme = 'Bjorklund'
+cool_wind_RGB_scheme = 'de Jager'
+cool_wind_AGB_scheme = 'de Jager'
+
+
+
+! show new plot
 use_other_pgstar_plots = .true.
 
 / ! end of controls namelist
