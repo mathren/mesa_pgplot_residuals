@@ -86,8 +86,10 @@ See also comment at the top of the file =pgstar_residuals.inc=.
 These plots will be saved in a subfolder =png= of your work directory,
 this is hardcoded.
 
-** TODO Developments needed
+** Ongoing development
 
 Right now you can only have one of these plots because there is only
 one pointer =s% other_pgstar_plots_info=, to solve this some of these
 routines need to be ported into =MESA= itself.
+
+See [[https://github.com/MESAHub/mesa/tree/pgplot_residuals][this branch in the MESA repo]]
