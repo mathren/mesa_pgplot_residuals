@@ -82,9 +82,45 @@ contains
     s% how_many_extra_profile_header_items => how_many_extra_profile_header_items
     s% data_for_extra_profile_header_items => data_for_extra_profile_header_items
 
+    s% other_alpha_mlt => alpha_mlt_routine
+
     s%other_pgstar_plots_info => nr_resid_kipp_plots_info
     ! s% other_pgstar_plots_info => equ_resid_hist
   end subroutine extras_controls
+
+
+      subroutine alpha_mlt_routine(id, ierr)
+         use chem_def, only: ih1
+         integer, intent(in) :: id
+         integer, intent(out) :: ierr
+         type (star_info), pointer :: s
+         integer :: k, h1
+         real(dp) :: alpha_H, alpha_other, H_limit
+         include 'formats'
+         ierr = 0
+         call star_ptr(id, s, ierr)
+         if (ierr /= 0) return
+         alpha_H = s% x_ctrl(21)
+         alpha_other = s% x_ctrl(22)
+         H_limit = s% x_ctrl(23)
+         h1 = s% net_iso(ih1)
+         !write(*,1) 'alpha_H', alpha_H
+         !write(*,1) 'alpha_other', alpha_other
+         !write(*,1) 'H_limit', H_limit
+         !write(*,2) 'h1', h1
+         !write(*,2) 's% nz', s% nz
+         if (alpha_H <= 0 .or. alpha_other <= 0 .or. h1 <= 0) return
+         do k=1,s% nz
+            if (s% xa(h1,k) >= H_limit) then
+               s% alpha_mlt(k) = alpha_H
+            else
+               s% alpha_mlt(k) = alpha_other
+            end if
+            !write(*,2) 'alpha_mlt', k, s% alpha_mlt(k),
+         end do
+         !stop
+      end subroutine alpha_mlt_routine
+
 
   subroutine extras_startup(id, restart, ierr)
     integer, intent(in) :: id
